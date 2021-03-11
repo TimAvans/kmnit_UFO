@@ -14,7 +14,7 @@ namespace kmint {
 		{
 			auto x = dynamic_cast<state_user*>(actor);
 
-			x->get_state_machine()->ChangeState(wander_state::Instance());
+			//x->get_state_machine()->ChangeState(wander_state::Instance());
 		}
 
 		void global_tank_state::enter(play::map_bound_actor* actor) { }

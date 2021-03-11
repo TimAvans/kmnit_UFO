@@ -10,8 +10,8 @@ namespace kmint {
 		state_user::state_user(map::map_graph& g, map::map_node& initial_node, graphics::image image) : play::map_bound_actor{ initial_node },
 			drawable_{ *this, image }, graph_{ &g }{
 
-			state_machine_ = new state_machine<play::map_bound_actor>(this);
-			state_machine_->SetCurrentState(flee_state::Instance()); }
+			state_machine_ = new probablistic_state_machine<play::map_bound_actor>(this);
+			state_machine_->SetCurrentState(wander_state::Instance()); }
 
 		void state_user::move_over_path()
 		{
@@ -35,7 +35,7 @@ namespace kmint {
 			node(node()[next_index].to());
 		}
 
-		state_machine<play::map_bound_actor>* state_user::get_state_machine() {
+		probablistic_state_machine<play::map_bound_actor>* state_user::get_state_machine() {
 			return state_machine_;
 		}
 

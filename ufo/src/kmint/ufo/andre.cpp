@@ -43,7 +43,6 @@ void andre::act(delta_time dt) {
 					break;
 				}
 			}
-
 			t_since_move_ = from_seconds(0);
 		}
 	}

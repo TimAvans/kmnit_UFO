@@ -6,6 +6,8 @@
 #include "kmint/ufo/global_tank_state.hpp"
 
 #include <iostream>
+#include <kmint/ufo/saucer.hpp>
+#include <kmint/ufo/astar.hpp>
 
 namespace kmint::ufo {
 
@@ -24,9 +26,12 @@ graphics::image tank_image(tank_type t) {
 
 } // namespace
 
-tank::tank(map::map_graph& g, map::map_node& initial_node, tank_type t) : state_user{g, initial_node, graphics::image{tank_image(t)}}
+tank::tank(map::map_graph& g, map::map_node& initial_node, tank_type t, play::stage& s) : state_user{ g, initial_node, graphics::image{tank_image(t)} }, type_{ t }, graph_{ &g }, stage_{ &s }
 {
 	state_machine_->SetGlobalState(global_tank_state::Instance());
+	state_machine_->SetCurrentState(wander_state::Instance());
+
+	emp_shield = "";
 }
 
 void tank::act(delta_time dt) {
@@ -37,10 +42,47 @@ void tank::act(delta_time dt) {
 	}
 	// laat ook zien wat hij ziet
 	for (auto i = begin_perceived(); i != end_perceived(); ++i) {
-		auto const& a = *i;
-		//std::cout << "Saw something at " << a.location().x() << ", "
-		//	<< a.location().y() << "\n";
+		auto& a = *i;
+		if (dynamic_cast<saucer*>(&a)) {
+			get_state_machine()->ChangeState();
+		}	
 	}
+}
+
+play::map_bound_actor* tank::find_closest_target(std::string target_type) {
+	//zoeken naar alle zooi en nodes van zooi opslaan in vector
+	std::vector<play::map_bound_actor*> actors;
+
+	actors = find_actors(*stage_, target_type);
+	astar a{*graph_};
+
+	int shortest_length = 3000000;
+	std::vector<int> shortest_path = {};
+	play::map_bound_actor* shortest_actor = nullptr;
+
+	//voor elke node in vector, doe astar
+	for (play::map_bound_actor* actor : actors) {
+		std::vector<int> path = a.search(node().node_id(), actor->node().node_id());
+		
+		int length = 0;
+		for (int node : path) {
+			length += graph_[0][node][0].weight();
+		}
+
+		if (length < shortest_length) {
+			shortest_length = length;
+			shortest_path = path;
+			shortest_actor = actor;
+		}
+	}
+
+	path_ = shortest_path;
+	return shortest_actor;
+}
+
+void tank::pick_up_item(play::map_bound_actor& object, std::string type) {
+	emp_shield = type;
+	object.remove();
 }
 
 } // namespace kmint::ufo
