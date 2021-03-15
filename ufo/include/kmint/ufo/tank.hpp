@@ -6,6 +6,7 @@
 #include "kmint/primitives.hpp"
 
 #include "kmint/ufo/state_user.hpp"
+#include <kmint/ufo/andre.hpp>
 
 namespace kmint {
 namespace ufo {
@@ -14,7 +15,7 @@ enum class tank_type { red, green };
 
 class tank : public state_user {
 public:
-  tank(map::map_graph& g, map::map_node& initial_node, tank_type t, play::stage& s);
+  tank(map::map_graph& g, map::map_node& initial_node, tank_type t, play::stage& s, andre& andre);
   // wordt elke game tick aangeroepen
   void act(delta_time dt) override;
 
@@ -31,6 +32,13 @@ public:
   void pick_up_item(play::map_bound_actor& object, std::string type);
   tank_type type_;
 
+  void take_damage();
+  int damage_;
+  actions curr_action_;
+
+  char current_target_;
+
+  andre* andre_;
 private:
   delta_time t_since_move_{};
   play::stage* stage_;

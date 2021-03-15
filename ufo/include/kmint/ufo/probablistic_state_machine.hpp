@@ -27,8 +27,11 @@ namespace kmint {
 			//float[3] = chance, lowerbound, upperbound
 			std::map<actions, std::vector<float>> chances;
 
+
 		public:
-			probablistic_state_machine(entity_type* owner) :owner_(owner), current_state_(NULL), global_state_(NULL) {
+			int last_damage = 0;
+
+			probablistic_state_machine(entity_type* owner) :owner_(owner), current_state_(NULL), global_state_(NULL) {			
 				std::vector<float> test = { 1.0f / 3.0f, 0.0f, 0.0f };
 
 				chances = {
@@ -86,20 +89,57 @@ namespace kmint {
 							if (it->first == actions::EMP) {
 								auto new_state = target_state::Instance();
 								new_state->current_target_type_ = "EMP";
+								if (auto t = dynamic_cast<tank*>(owner_)) {
+									t->curr_action_ = actions::EMP;
+								}
 								ChangeState(target_state::Instance());
 							}
 							else if (it->first == actions::SHIELD) {
 								auto new_state = target_state::Instance();
 								new_state->current_target_type_ = "SHIELD";
+								if (auto t = dynamic_cast<tank*>(owner_)) {
+									t->curr_action_ = actions::SHIELD;
+								}
 								ChangeState(target_state::Instance());
 							}
 							else {
 								ChangeState(flee_state::Instance());
+								if (auto t = dynamic_cast<tank*>(owner_)) {
+									t->curr_action_ = actions::FLEE;
+								}
 							}
 							break;
 						}
 					}
 				}
+			}
+
+			void change_chances(actions action, int damage_taken) {
+				for (std::map<actions, std::vector<float>>::iterator it = chances.begin(); it != chances.end(); ++it) {
+					if (damage_taken > last_damage) {
+						if (it->first == action) {
+							it->second[0] += 0.05;
+						}
+						else {
+							it->second[0] -= 0.025;
+						}
+					}
+					else if(damage_taken < last_damage){
+						if (it->first == action) {
+							it->second[0] -= 0.05;
+						}
+						else {
+							it->second[0] += 0.025;
+						}
+					}
+					if (it->second[0] < 0) {
+						it->second[0] = 0;
+					}
+					else if (it->second[0] > 1) {
+						it->second[0] = 1;
+					}
+				}
+				last_damage = damage_taken;
 			}
 
 			state<entity_type>* CurrentState() const

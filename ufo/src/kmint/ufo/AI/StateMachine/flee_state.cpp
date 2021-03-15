@@ -18,37 +18,29 @@ namespace kmint {
 		}
 
 		void flee_state::enter(play::map_bound_actor* actor) {
-			if (auto a = dynamic_cast<tank*>(actor)) {
-
-				if (a->type_ == tank_type::red) {
-					std::cout << "red : Entered flee state" << std::endl;
-				}
-				else {
-					std::cout << "green : Entered flee state" << std::endl;
-				}
-			}
-
 			if (auto t = dynamic_cast<tank*>(actor)) {
-					for (auto i = t->begin_perceived(); i != t->end_perceived(); ++i) {
-						auto& a = *i;
-						if (dynamic_cast<saucer*>(&a)) {
-							math::vector2d diff = {
-								(t->location().x() - a.location().x()) * -1,
-								(t->location().y() - a.location().y()) * -1,
-							};
+				begin_damage_ = t->damage_;
 
-							math::vector2d flee_location = {
-								t->location().x() - diff.x(),
-								t->location().y() - diff.y()
-							};
+				for (auto i = t->begin_perceived(); i != t->end_perceived(); ++i) {
+					auto& u = *i;
+					if (dynamic_cast<saucer*>(&u)) {
+						math::vector2d diff = {
+							(t->location().x() - u.location().x()) * -1,
+							(t->location().y() - u.location().y()) * -1,
+						};
 
-							astar a{ *t->get_graph() };
+						math::vector2d flee_location = {
+							t->location().x() - diff.x(),
+							t->location().y() - diff.y()
+						};
 
-							t->path_ = a.search(t->node().node_id(), find_closest_node_to(*t->get_graph(), flee_location).node_id());
+						astar a{ *t->get_graph() };
 
-							break;
-						}
+						t->path_ = a.search(t->node().node_id(), find_closest_node_to(*t->get_graph(), flee_location).node_id());
+
+						break;
 					}
+				}
 			}
 		}
 
@@ -64,7 +56,11 @@ namespace kmint {
 		}
 
 		void flee_state::exit(play::map_bound_actor* actor) {
-
+			if (auto a = dynamic_cast<tank*>(actor)) {
+				if (a->damage_ > begin_damage_) {
+					a->get_state_machine()->change_chances(actions::FLEE, 0);
+				}
+			}
 		}
 	}
 }

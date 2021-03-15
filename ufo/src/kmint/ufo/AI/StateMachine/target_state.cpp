@@ -38,7 +38,6 @@ namespace kmint {
 					a->get_state_machine()->ChangeState(wander_state::Instance());
 				}
 			}
-
 		}
 
 		void target_state::exit(play::map_bound_actor* actor) {

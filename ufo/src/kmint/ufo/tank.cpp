@@ -11,78 +11,100 @@
 
 namespace kmint::ufo {
 
-namespace {
-graphics::image tank_image(tank_type t) {
-  constexpr scalar scale = 0.35;
-  switch (t) {
-  case tank_type::red:
-    return graphics::image{"resources/tank_red.png", scale};
-  case tank_type::green:
-    return graphics::image{"resources/tank_green.png", scale};
-  }
-  return graphics::image{"resources/tank_green.png", scale};
-}
-
-
-} // namespace
-
-tank::tank(map::map_graph& g, map::map_node& initial_node, tank_type t, play::stage& s) : state_user{ g, initial_node, graphics::image{tank_image(t)} }, type_{ t }, graph_{ &g }, stage_{ &s }
-{
-	state_machine_->SetGlobalState(global_tank_state::Instance());
-	state_machine_->SetCurrentState(wander_state::Instance());
-
-	emp_shield = "";
-}
-
-void tank::act(delta_time dt) {
-	t_since_move_ += dt;
-	if (to_seconds(t_since_move_) >= waiting_time(node())) {
-		get_state_machine()->Update();
-		t_since_move_ = from_seconds(0);
-	}
-	// laat ook zien wat hij ziet
-	for (auto i = begin_perceived(); i != end_perceived(); ++i) {
-		auto& a = *i;
-		if (dynamic_cast<saucer*>(&a)) {
-			get_state_machine()->ChangeState();
-		}	
-	}
-}
-
-play::map_bound_actor* tank::find_closest_target(std::string target_type) {
-	//zoeken naar alle zooi en nodes van zooi opslaan in vector
-	std::vector<play::map_bound_actor*> actors;
-
-	actors = find_actors(*stage_, target_type);
-	astar a{*graph_};
-
-	int shortest_length = 3000000;
-	std::vector<int> shortest_path = {};
-	play::map_bound_actor* shortest_actor = nullptr;
-
-	//voor elke node in vector, doe astar
-	for (play::map_bound_actor* actor : actors) {
-		std::vector<int> path = a.search(node().node_id(), actor->node().node_id());
-		
-		int length = 0;
-		for (int node : path) {
-			length += graph_[0][node][0].weight();
+	namespace {
+		graphics::image tank_image(tank_type t) {
+			constexpr scalar scale = 0.35;
+			switch (t) {
+			case tank_type::red:
+				return graphics::image{ "resources/tank_red.png", scale };
+			case tank_type::green:
+				return graphics::image{ "resources/tank_green.png", scale };
+			}
+			return graphics::image{ "resources/tank_green.png", scale };
 		}
 
-		if (length < shortest_length) {
-			shortest_length = length;
-			shortest_path = path;
-			shortest_actor = actor;
+
+	} // namespace
+
+	tank::tank(map::map_graph& g, map::map_node& initial_node, tank_type t, play::stage& s, andre& andre) : state_user{ g, initial_node, graphics::image{tank_image(t)} }, type_{ t }, graph_{ &g }, stage_{ &s }, andre_{&andre}
+	{
+		state_machine_->SetGlobalState(global_tank_state::Instance());
+		state_machine_->SetCurrentState(wander_state::Instance());
+
+		emp_shield = "";
+		damage_ = 100;
+		curr_action_ = actions::FLEE;
+	}
+
+	void tank::act(delta_time dt) {
+		t_since_move_ += dt;
+		if (to_seconds(t_since_move_) >= waiting_time(node())) {
+			get_state_machine()->Update();
+			t_since_move_ = from_seconds(0);
+		}
+		// laat ook zien wat hij ziet
+		for (auto i = begin_perceived(); i != end_perceived(); ++i) {
+			auto& a = *i;
+			if (dynamic_cast<saucer*>(&a)) {
+				get_state_machine()->ChangeState();
+			}
 		}
 	}
 
-	path_ = shortest_path;
-	return shortest_actor;
-}
+	void tank::take_damage() {
+		int added_damage = 0;
 
-void tank::pick_up_item(play::map_bound_actor& object, std::string type) {
-	emp_shield = type;
-	object.remove();
-}
+		if (emp_shield == "shield") {
+			added_damage = 20;
+			get_state_machine()->change_chances(actions::SHIELD, added_damage);
+		}
+		else if (emp_shield == "emp") {
+			added_damage = 0;
+			get_state_machine()->change_chances(actions::EMP, added_damage);
+		}
+		else {
+			added_damage = 50;
+			get_state_machine()->change_chances(actions::FLEE, added_damage);
+		}
+
+		emp_shield = "";
+		damage_ += added_damage;
+	}
+
+	play::map_bound_actor* tank::find_closest_target(std::string target_type) {
+		//zoeken naar alle zooi en nodes van zooi opslaan in vector
+		std::vector<play::map_bound_actor*> actors;
+
+		actors = find_actors(*stage_, target_type);
+		astar a{ *graph_ };
+
+		int shortest_length = 3000000;
+		std::vector<int> shortest_path = {};
+		play::map_bound_actor* shortest_actor = nullptr;
+
+		//voor elke node in vector, doe astar
+		for (play::map_bound_actor* actor : actors) {
+			std::vector<int> path = a.search(node().node_id(), actor->node().node_id());
+
+			int length = 0;
+			for (int node : path) {
+				length += graph_[0][node][0].weight();
+			}
+
+			if (length < shortest_length) {
+				shortest_length = length;
+				shortest_path = path;
+				shortest_actor = actor;
+			}
+		}
+
+		path_ = shortest_path;
+		return shortest_actor;
+	}
+
+	void tank::pick_up_item(play::map_bound_actor& object, std::string type) {
+		emp_shield = type;
+		object.remove();
+	}
 
 } // namespace kmint::ufo

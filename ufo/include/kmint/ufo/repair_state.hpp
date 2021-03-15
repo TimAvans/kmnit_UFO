@@ -1,20 +1,18 @@
 #pragma once
 #include "state.hpp"
-#include "kmint/play.hpp"
+#include <kmint\play\actor.hpp>
 
 namespace kmint {
 	namespace ufo {
-		class flee_state : public state<play::map_bound_actor> {
+		class repair_state : public state<play::map_bound_actor> {
 		public:
-			static flee_state* Instance();
+			static repair_state* Instance();
 			void execute(play::map_bound_actor* actor) override;
 			void enter(play::map_bound_actor* actor) override;
 			void exit(play::map_bound_actor* actor) override;
 
-			bool busy = false;
 		private:
-			flee_state() {}
-			int begin_damage_;
+			repair_state() {}
 		};
 	}
 }

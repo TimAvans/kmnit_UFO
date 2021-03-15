@@ -12,7 +12,7 @@ public:
   void act(delta_time dt) override;
   // participates in collisions
   bool incorporeal() const override { return false; }
-  scalar collision_range() const override { return 32.0; }
+  scalar collision_range() const override { return 64.0; }
 
 private:
   play::image_drawable drawable_;

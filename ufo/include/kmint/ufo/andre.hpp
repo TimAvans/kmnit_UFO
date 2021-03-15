@@ -21,6 +21,7 @@ public:
 	scalar collision_range() const override { return 16.0; }
 	// geeft aan dat andré andere actors kan zien
 	bool perceptive() const override { return true; }
+	char current_target_ = '1';
 
 private:
 	// hoeveel tijd is verstreken sinds de laatste beweging
@@ -29,7 +30,6 @@ private:
 	play::image_drawable drawable_;
 	map::map_graph* graph_;
 	
-	char current_target_ = '1';
 	std::vector<int> path_;
 
 
