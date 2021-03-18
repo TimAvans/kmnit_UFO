@@ -3,14 +3,12 @@
     "",
     "\\ufo",
     "\\ufo\\include",
-    "\\ufo\\include\\kmint",
-    "\\ufo\\include\\kmint\\ufo",
     "\\ufo\\src",
     "\\ufo\\src\\kmint",
     "\\ufo\\src\\kmint\\ufo",
     "\\ufo\\src\\kmint\\ufo\\AI",
     "\\ufo\\src\\kmint\\ufo\\AI\\StateMachine"
   ],
-  "SelectedNode": "\\ufo\\include\\kmint\\ufo\\probablistic_state_machine.hpp",
+  "SelectedNode": "\\ufo\\src\\kmint\\ufo\\AI\\ForceDriven",
   "PreviewInSolutionExplorer": false
 }

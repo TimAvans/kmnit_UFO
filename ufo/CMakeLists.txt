@@ -19,7 +19,7 @@ add_library(ufo-common STATIC
   src/kmint/ufo/human.cpp
   src/kmint/ufo/node_algorithm.cpp
   src/kmint/ufo/play.cpp
-  src/kmint/ufo/AI/astar.cpp
+  
   src/kmint/ufo/AI/StateMachine/state_user.cpp
   src/kmint/ufo/AI/StateMachine/wander_state.cpp
   src/kmint/ufo/AI/StateMachine/flee_state.cpp
@@ -27,7 +27,12 @@ add_library(ufo-common STATIC
   src/kmint/ufo/AI/StateMachine/repair_state.cpp
   src/kmint/ufo/AI/StateMachine/global_tank_state.cpp
   src/kmint/ufo/emp.cpp
+  src/kmint/ufo/AI/astar.cpp
   src/kmint/ufo/shield.cpp
+  src/kmint/ufo/AI/ForceDriven/steering_behaviour.cpp
+  src/kmint/ufo/AI/ForceDriven/moving_entity.cpp
+  src/kmint/ufo/AI/ForceDriven/wall.cpp
+  src/kmint/ufo/AI/ForceDriven/c2d_matrix.cpp
   )
 
 target_compile_features(ufo-common PUBLIC cxx_std_17)

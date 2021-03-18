@@ -50,10 +50,10 @@ int play() {
   auto& andre = s.build_actor<ufo::andre>(graph, ufo::random_node_of_kind(m, 'R'));
   s.build_actor<ufo::tank>(graph, ufo::random_node_of_kind(m, 'T'), tank_type::red, s, andre);
   s.build_actor<ufo::tank>(graph, ufo::random_node_of_kind(m, 'T'), tank_type::green, s, andre);
-  s.build_actor<ufo::saucer>(saucer_type::blue);
-  s.build_actor<ufo::saucer>(saucer_type::green);
-  s.build_actor<ufo::saucer>(saucer_type::beige);
-  s.build_actor<ufo::saucer>(saucer_type::yellow);
+  auto& ufo = s.build_actor<ufo::saucer>(saucer_type::blue);
+  //s.build_actor<ufo::saucer>(saucer_type::green);
+  //s.build_actor<ufo::saucer>(saucer_type::beige);
+  //s.build_actor<ufo::saucer>(saucer_type::yellow);
 
   // Maak een event_source aan (hieruit kun je alle events halen, zoals
   // toetsaanslagen)
@@ -72,6 +72,8 @@ int play() {
       // de meegegeven functie (of lambda) aanroept om met het
       // bijbehorende quit_event
       //
+      
+       
       e.handle_quit([&ctl](ui::events::quit_event qe) { ctl.quit = true; });
       e.handle_key_up([&](auto ke) {
         switch (ke.key) {
@@ -87,6 +89,9 @@ int play() {
         case ui::events::key::closing_bracket:
           ctl.time_scale *= 2.0;
           break;
+        case ui::events::key::f:
+            find_actors(s, "kutzooi");
+            break;
         default:
           break;
         }

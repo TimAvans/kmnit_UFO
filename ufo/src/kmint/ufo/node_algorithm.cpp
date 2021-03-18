@@ -6,6 +6,7 @@
 #include <numeric>
 #include <kmint/ufo/emp.hpp>
 #include <kmint/ufo/shield.hpp>
+#include <kmint/ufo/saucer.hpp>
 
 namespace kmint {
 	namespace ufo {
