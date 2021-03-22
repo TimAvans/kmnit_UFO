@@ -51,9 +51,9 @@ int play() {
   s.build_actor<ufo::tank>(graph, ufo::random_node_of_kind(m, 'T'), tank_type::red, s, andre);
   s.build_actor<ufo::tank>(graph, ufo::random_node_of_kind(m, 'T'), tank_type::green, s, andre);
   auto& ufo = s.build_actor<ufo::saucer>(saucer_type::blue);
-  //s.build_actor<ufo::saucer>(saucer_type::green);
-  //s.build_actor<ufo::saucer>(saucer_type::beige);
-  //s.build_actor<ufo::saucer>(saucer_type::yellow);
+  s.build_actor<ufo::saucer>(saucer_type::green);
+  s.build_actor<ufo::saucer>(saucer_type::beige);
+  s.build_actor<ufo::saucer>(saucer_type::yellow);
 
   // Maak een event_source aan (hieruit kun je alle events halen, zoals
   // toetsaanslagen)
@@ -89,9 +89,6 @@ int play() {
         case ui::events::key::closing_bracket:
           ctl.time_scale *= 2.0;
           break;
-        case ui::events::key::f:
-            find_actors(s, "kutzooi");
-            break;
         default:
           break;
         }

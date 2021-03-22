@@ -4,6 +4,7 @@
 #include "kmint/ufo/state_machine.hpp"
 #include "kmint/ufo/wander_state.hpp"
 #include "kmint/ufo/flee_state.hpp"
+#include <kmint/ufo/astar.hpp>
 
 namespace kmint {
 	namespace ufo {
@@ -27,6 +28,10 @@ namespace kmint {
 					}
 				}
 			}
+			else {
+				astar a(*get_graph());
+				a.clear_path_color(initial_path_, visited_);
+			}
 		}
 
 		void state_user::random_move()
@@ -41,6 +46,11 @@ namespace kmint {
 
 		map::map_graph* state_user::get_graph() {
 			return graph_;
+		}
+
+		void state_user::set_path(std::vector<int> path) {
+			path_ = path;
+			initial_path_ = path;
 		}
 
 		void state_user::collide_with_human() {

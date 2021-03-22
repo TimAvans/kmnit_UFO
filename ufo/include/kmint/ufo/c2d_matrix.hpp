@@ -28,6 +28,8 @@ namespace kmint {
 
 			void rotate(const math::vector2d& fwd, const math::vector2d& side);
 
+			void rotate(double rotation);
+			
 			void translate(double x, double y);
 
 			void transform_vector2ds(math::vector2d& point);

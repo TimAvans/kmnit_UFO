@@ -24,6 +24,22 @@ namespace kmint {
 			matrix_multiply(m);
 		}
 
+		void c2d_matrix::rotate(double rotation) {
+			matrix mat;
+
+			double Sin = sin(rotation);
+			double Cos = cos(rotation);
+
+			mat._11 = Cos;  mat._12 = Sin; mat._13 = 0;
+
+			mat._21 = -Sin; mat._22 = Cos; mat._23 = 0;
+
+			mat._31 = 0; mat._32 = 0; mat._33 = 1;
+
+			//and multiply
+			matrix_multiply(mat);
+		}
+
 		void c2d_matrix::translate(double x, double y)
 		{
 			matrix m;

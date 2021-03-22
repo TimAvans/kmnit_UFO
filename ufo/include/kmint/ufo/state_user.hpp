@@ -13,9 +13,13 @@ namespace kmint {
 			ui::drawable const& drawable() const override { return drawable_; }
 
 			std::vector<int> path_;
+			std::vector<int> visited_;
+			std::vector<int> initial_path_;
 
 			void move_over_path();
 			void random_move();
+
+			void set_path(std::vector<int> path);
 
 			map::map_graph* get_graph();
 			probablistic_state_machine<play::map_bound_actor>* get_state_machine();

@@ -20,6 +20,13 @@ andre::andre(map::map_graph& g, map::map_node& initial_node)
 													 graphics::image{
 														 andre_image()}}, graph_{ &g } {}
 
+
+
+void andre::set_path(std::vector<int> path) {
+	path_ = path;
+	initial_path_ = path;
+}
+
 void andre::act(delta_time dt) {
 	t_since_move_ += dt;
 	if (to_seconds(t_since_move_) >= waiting_time(node())) {
@@ -33,7 +40,15 @@ void andre::act(delta_time dt) {
 		}
 
 		if (path_.size() <= 0) {
-			path_ = a.search(this->node().node_id(), find_node_of_kind(*graph_, current_target_).node_id());
+
+			auto result = a.search(this->node().node_id(), find_node_of_kind(*graph_, current_target_).node_id());
+
+			a.clear_path_color(initial_path_, visited_);
+
+			set_path(result[0]);
+			visited_ = result[1];
+
+			a.show_shortest_path(path_, visited_);
 		}
 		else {
 			for (std::size_t i = 0; i < node().num_edges(); ++i) {
@@ -45,6 +60,7 @@ void andre::act(delta_time dt) {
 			}
 			t_since_move_ = from_seconds(0);
 		}
+
 	}
 }
 

@@ -11,7 +11,7 @@ namespace kmint {
 			math::vector2d steering_force_;
 
 			std::vector<math::vector2d> feelers_;
-			double feeler_length_;
+			double feeler_length_ = 30;
 
 			//wander
 			math::vector2d wander_target_;
@@ -27,13 +27,13 @@ namespace kmint {
 			double        alignment_weight_;
 			double        wander_weight_ = 1;
 			double        obstacle_avoidance_weight_;
-			double        wall_avoidance_weight_;
+			double        wall_avoidance_weight_ = 50;
 			double        seek_weight_;
 			double        flee_weight_;
 			double        pursuit_weight_;
 			double        offset_pursuit_weight_;
 
-
+			std::vector<wall> walls_;
 
 			void create_feelers();
 
@@ -43,11 +43,14 @@ namespace kmint {
 
 			//this returns a steering force which will keep the agent away from any
 			//walls it may encounter
-			math::vector2d WallAvoidance(const std::vector<wall>& walls);
+			math::vector2d wall_avoidance(const std::vector<wall>& walls);
 
 			float random_clamped();
 			float length(math::vector2d vector);
 
+			void rotate_vec_around_origin(math::vector2d& vec, double angle);
+			double distance(math::vector2d& a, math::vector2d& b);
+			bool line_intersection(math::vector2d a, math::vector2d b, math::vector2d c, math::vector2d d, double& dist, math::vector2d& point);
 			math::vector2d point_to_world_space(const math::vector2d& point, const math::vector2d& agent_heading, const math::vector2d& agent_side, const math::vector2d& agent_location);
 		public:
 			steering_behaviour(moving_entity* agent, double jitter, double radius, double distance);

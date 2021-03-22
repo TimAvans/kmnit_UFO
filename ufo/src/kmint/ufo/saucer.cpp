@@ -92,7 +92,7 @@ void saucer::act(delta_time dt) {
 
     location(location() + velocity_ * time_elapsed_);
 
-    if ((velocity_.x() * velocity_.x()) + (velocity_.y() * velocity_.y()) > 0.00001) {
+    if ((velocity_.x() * velocity_.x()) + (velocity_.y() * velocity_.y()) > 0) {
         heading_ = math::normalize(velocity_);
         side_ = math::perp(side_);
     }

@@ -36,12 +36,14 @@ public:
   int damage_;
   actions curr_action_;
 
+
+  play::map_bound_actor* current_target_object_;
   char current_target_;
+  play::stage* stage_;
 
   andre* andre_;
 private:
   delta_time t_since_move_{};
-  play::stage* stage_;
   map::map_graph* graph_;
 
   std::string emp_shield;

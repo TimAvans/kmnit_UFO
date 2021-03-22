@@ -14,7 +14,7 @@ namespace kmint {
 		}
 
 		void wander_state::enter(play::map_bound_actor* actor) {
-			std::cout << "Entering Wander" << std::endl;
+
 		}
 
 		void wander_state::execute(play::map_bound_actor* actor)

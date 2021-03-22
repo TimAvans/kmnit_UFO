@@ -12,7 +12,7 @@ namespace kmint {
 			return h;
 		}
 
-		std::vector<int> astar::search(int source, int target) {
+		std::vector<std::vector<int>> astar::search(int source, int target) {
 			//list of accumulate cost --> index is node_id
 			std::vector<int> g_costs(_graph.num_nodes());
 			//list of node with previous nodes
@@ -79,23 +79,36 @@ namespace kmint {
 				n = previous_nodes[n];
 			}
 
-			show_shortest_path(path, visited);
-			return path;
+			
+
+			return { path, visited };
 		}
 
 		void astar::show_shortest_path(std::vector<int> path, std::vector<int> visited) {
-			_graph.untag_all();
-
 			//give visited color
 			for (int j : visited)
 			{
-				_graph[j].tag(graph::node_tag::visited);
+				if (_graph[j].tagged()) {
+					_graph[j].tag(graph::node_tag::visited);
+				}
 			}
 			//give path color
 			for (int i : path) {
 				_graph[i].tag(graph::node_tag::path);
 			}
 
+		}
+
+		void astar::clear_path_color(std::vector<int> path, std::vector<int> visited) {
+
+			for (int j : visited)
+			{
+				_graph[j].tag(graph::node_tag::normal);
+			}
+
+			for (int i : path) {
+				_graph[i].tag(graph::node_tag::normal);
+			}
 		}
 	}
 }

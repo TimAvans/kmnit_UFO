@@ -23,6 +23,7 @@ public:
 	bool perceptive() const override { return true; }
 	char current_target_ = '1';
 
+	void set_path(std::vector<int> path);
 private:
 	// hoeveel tijd is verstreken sinds de laatste beweging
 	delta_time t_since_move_{};
@@ -31,7 +32,8 @@ private:
 	map::map_graph* graph_;
 	
 	std::vector<int> path_;
-
+	std::vector<int> initial_path_;
+	std::vector<int> visited_;
 
 };
 

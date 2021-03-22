@@ -9,7 +9,10 @@ namespace kmint {
 		class astar {
 		public:
 			astar(map::map_graph& graph) :_graph(graph) {}
-			std::vector<int> search(int source, int target);
+			std::vector<std::vector<int>> search(int source, int target);
+			void show_shortest_path(std::vector<int> path, std::vector<int> visited);
+			void clear_path_color(std::vector<int> path, std::vector<int> visited);
+
 		private:
 			typedef std::pair<int, int> iPair;
 
@@ -20,7 +23,6 @@ namespace kmint {
 			//Get location of given node
 			kmint::math::vector2d GetNodeLocation(int node_id);
 
-			void show_shortest_path(std::vector<int> path, std::vector<int> visited);
 		};
 	}
 }

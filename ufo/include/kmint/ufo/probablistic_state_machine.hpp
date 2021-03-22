@@ -31,7 +31,7 @@ namespace kmint {
 		public:
 			int last_damage = 0;
 
-			probablistic_state_machine(entity_type* owner) :owner_(owner), current_state_(NULL), global_state_(NULL) {			
+			probablistic_state_machine(entity_type* owner) :owner_(owner), current_state_(NULL), global_state_(NULL) {
 				std::vector<float> test = { 1.0f / 3.0f, 0.0f, 0.0f };
 
 				chances = {
@@ -77,46 +77,57 @@ namespace kmint {
 
 			void ChangeState() {
 				if (dynamic_cast<wander_state*>(current_state_)) {
-					float random_chance = kmint::random_int(0.0, 100.0) / 100.0f;
-
+					int i = 0;
 					float accumulated = 0;
+
 					for (std::map<actions, std::vector<float>>::iterator it = chances.begin(); it != chances.end(); ++it) {
 						it->second[1] = accumulated;
 						it->second[2] = it->second[1] + it->second[0];
 						accumulated = it->second[2];
-						
-						if (random_chance > it->second[1] && random_chance < it->second[2]) {
-							if (it->first == actions::EMP) {
-								auto new_state = target_state::Instance();
-								new_state->current_target_type_ = "EMP";
-								if (auto t = dynamic_cast<tank*>(owner_)) {
-									t->curr_action_ = actions::EMP;
+					}
+
+					bool is_valid = false;
+
+					while (!is_valid) {
+						float random_chance = kmint::random_int(0.0, 100.0) / 100.0f;
+						if (auto t = dynamic_cast<tank*>(owner_)) {
+							for (std::map<actions, std::vector<float>>::iterator it = chances.begin(); it != chances.end(); ++it) {
+								if (random_chance > it->second[1] && random_chance < it->second[2]) {
+									if (it->first == actions::EMP) {
+										if (find_actors(*t->stage_, "EMP").size() > 0) {
+											is_valid = true;
+											auto new_state = target_state::Instance();
+											new_state->current_target_type_ = "EMP";
+											t->curr_action_ = actions::EMP;
+											ChangeState(new_state);
+										}
+									}
+									else if (it->first == actions::SHIELD) {
+										if (find_actors(*t->stage_, "SHIELD").size() > 0) {
+											auto new_state = target_state::Instance();
+											new_state->current_target_type_ = "SHIELD";
+											t->curr_action_ = actions::SHIELD;
+											is_valid = true;
+											ChangeState(new_state);
+										}
+
+									}
+									else {
+										t->curr_action_ = actions::FLEE;
+										ChangeState(flee_state::Instance());
+										is_valid = true;
+									}
 								}
-								ChangeState(target_state::Instance());
 							}
-							else if (it->first == actions::SHIELD) {
-								auto new_state = target_state::Instance();
-								new_state->current_target_type_ = "SHIELD";
-								if (auto t = dynamic_cast<tank*>(owner_)) {
-									t->curr_action_ = actions::SHIELD;
-								}
-								ChangeState(target_state::Instance());
-							}
-							else {
-								ChangeState(flee_state::Instance());
-								if (auto t = dynamic_cast<tank*>(owner_)) {
-									t->curr_action_ = actions::FLEE;
-								}
-							}
-							break;
 						}
 					}
 				}
 			}
 
+
 			void change_chances(actions action, int damage_taken) {
 				for (std::map<actions, std::vector<float>>::iterator it = chances.begin(); it != chances.end(); ++it) {
-					if (damage_taken > last_damage) {
+					if (damage_taken < last_damage) {
 						if (it->first == action) {
 							it->second[0] += 0.05;
 						}
@@ -124,7 +135,7 @@ namespace kmint {
 							it->second[0] -= 0.025;
 						}
 					}
-					else if(damage_taken < last_damage){
+					else if (damage_taken > last_damage) {
 						if (it->first == action) {
 							it->second[0] -= 0.05;
 						}

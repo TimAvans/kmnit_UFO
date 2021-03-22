@@ -24,24 +24,25 @@ namespace kmint {
 
 				}
 
-				current_target_ = a->find_closest_target(current_target_type_);
+				a->change_color(255, 0, 0);
+				a->current_target_object_ = a->find_closest_target(current_target_type_);
 			}
 		}
 
 		void target_state::execute(play::map_bound_actor* actor)
 		{
 			if (auto a = dynamic_cast<tank*>(actor)) {
-				a->move_over_path();
-
 				if (a->path_.size() == 0) {
-					a->pick_up_item(*current_target_, current_target_type_);
+					a->pick_up_item(*a->current_target_object_, current_target_type_);
 					a->get_state_machine()->ChangeState(wander_state::Instance());
 				}
+				a->move_over_path();
 			}
 		}
 
 		void target_state::exit(play::map_bound_actor* actor) {
-
+			auto x = dynamic_cast<state_user*>(actor);
+			x->clear_color();
 		}
 	}
 }

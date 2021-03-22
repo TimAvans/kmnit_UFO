@@ -21,6 +21,8 @@ namespace kmint {
 			if (auto t = dynamic_cast<tank*>(actor)) {
 				begin_damage_ = t->damage_;
 
+				t->change_color(0, 0, 255);
+
 				for (auto i = t->begin_perceived(); i != t->end_perceived(); ++i) {
 					auto& u = *i;
 					if (dynamic_cast<saucer*>(&u)) {
@@ -36,7 +38,13 @@ namespace kmint {
 
 						astar a{ *t->get_graph() };
 
-						t->path_ = a.search(t->node().node_id(), find_closest_node_to(*t->get_graph(), flee_location).node_id());
+						auto result = a.search(t->node().node_id(), find_closest_node_to(*t->get_graph(), flee_location).node_id());
+						a.clear_path_color(t->path_, t->visited_);
+						
+						t->set_path(result[0]);
+						t->visited_ = result[1];
+
+						a.show_shortest_path(t->path_, t->visited_);
 
 						break;
 					}
@@ -60,6 +68,7 @@ namespace kmint {
 				if (a->damage_ > begin_damage_) {
 					a->get_state_machine()->change_chances(actions::FLEE, 0);
 				}
+				a->clear_color();
 			}
 		}
 	}

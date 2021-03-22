@@ -32,7 +32,7 @@ namespace kmint::ufo {
 		state_machine_->SetCurrentState(wander_state::Instance());
 
 		emp_shield = "";
-		damage_ = 100;
+		//damage_ = 100;
 		curr_action_ = actions::FLEE;
 	}
 
@@ -84,7 +84,7 @@ namespace kmint::ufo {
 
 		//voor elke node in vector, doe astar
 		for (play::map_bound_actor* actor : actors) {
-			std::vector<int> path = a.search(node().node_id(), actor->node().node_id());
+			std::vector<int> path = a.search(node().node_id(), actor->node().node_id())[0];
 
 			int length = 0;
 			for (int node : path) {
@@ -98,7 +98,9 @@ namespace kmint::ufo {
 			}
 		}
 
-		path_ = shortest_path;
+		set_path(shortest_path);
+		a.show_shortest_path(path_, visited_);
+
 		return shortest_actor;
 	}
 

@@ -11,7 +11,6 @@ namespace kmint {
 			void enter(play::map_bound_actor* actor) override;
 			void exit(play::map_bound_actor* actor) override;
 			
-			play::map_bound_actor* current_target_;
 			std::string current_target_type_;
 		private:
 			target_state() {}

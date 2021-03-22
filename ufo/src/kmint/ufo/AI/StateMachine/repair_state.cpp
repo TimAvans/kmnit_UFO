@@ -20,7 +20,17 @@ namespace kmint {
 			if (auto x = dynamic_cast<tank*>(actor)) {
 				astar a(*x->get_graph());
 				x->current_target_ = x->andre_->current_target_;
-				x->path_ = a.search(x->node().node_id(), find_node_of_kind(*x->get_graph(), x->andre_->current_target_).node_id());
+
+				auto result = a.search(x->node().node_id(), find_node_of_kind(*x->get_graph(), x->andre_->current_target_).node_id());
+				a.clear_path_color(x->path_, x->visited_);
+
+
+				x->set_path(result[0]);
+				x->visited_ = result[1];
+
+				a.show_shortest_path(x->path_, x->visited_);
+
+				x->change_color(0, 255, 0);
 			}
 		}
 
@@ -44,13 +54,24 @@ namespace kmint {
 						x->current_target_ = '4';
 					}
 					astar a(*x->get_graph());
-					x->path_ = a.search(x->node().node_id(), find_node_of_kind(*x->get_graph(), x->current_target_).node_id());
+
+					auto result = a.search(x->node().node_id(), find_node_of_kind(*x->get_graph(), x->current_target_).node_id());
+
+					a.clear_path_color(x->path_, x->visited_);
+
+
+					x->set_path(result[0]);
+					x->visited_ = result[1];
+
+					a.show_shortest_path(x->path_, x->visited_);
 				}
 			}
 		}
 
 		void repair_state::exit(play::map_bound_actor* actor) {
+			auto x = dynamic_cast<state_user*>(actor);
 
+			x->clear_color();
 		}
 	}
 }
