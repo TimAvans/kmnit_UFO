@@ -6,7 +6,7 @@ namespace kmint {
 	namespace ufo {
 		class steering_behaviour {
 		private:
-			moving_entity* agent_;
+			moving_entity *agent_;
 
 			math::vector2d steering_force_;
 
@@ -27,23 +27,20 @@ namespace kmint {
 			double        alignment_weight_;
 			double        wander_weight_ = 1;
 			double        obstacle_avoidance_weight_;
-			double        wall_avoidance_weight_ = 50;
-			double        seek_weight_;
+			double        wall_avoidance_weight_ = 5000;
+			double        seek_weight_ = 1;
 			double        flee_weight_;
-			double        pursuit_weight_;
+			double        pursuit_weight_ = 1;
 			double        offset_pursuit_weight_;
 
 			std::vector<wall> walls_;
 
 			void create_feelers();
 
-			math::vector2d seek(math::vector2d target_pos);
 			math::vector2d flee(math::vector2d target_pos);
-			math::vector2d wander();
 
 			//this returns a steering force which will keep the agent away from any
 			//walls it may encounter
-			math::vector2d wall_avoidance(const std::vector<wall>& walls);
 
 			float random_clamped();
 			float length(math::vector2d vector);
@@ -55,7 +52,10 @@ namespace kmint {
 		public:
 			steering_behaviour(moving_entity* agent, double jitter, double radius, double distance);
 
-
+			math::vector2d wall_avoidance();
+			math::vector2d wander();
+			math::vector2d pursuit(play::actor* evader);
+			math::vector2d seek(math::vector2d target_pos);
 
 			math::vector2d calculate();
 		};

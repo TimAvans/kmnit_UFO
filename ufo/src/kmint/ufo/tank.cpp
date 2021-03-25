@@ -22,8 +22,6 @@ namespace kmint::ufo {
 			}
 			return graphics::image{ "resources/tank_green.png", scale };
 		}
-
-
 	} // namespace
 
 	tank::tank(map::map_graph& g, map::map_node& initial_node, tank_type t, play::stage& s, andre& andre) : state_user{ g, initial_node, graphics::image{tank_image(t)} }, type_{ t }, graph_{ &g }, stage_{ &s }, andre_{&andre}
@@ -31,17 +29,27 @@ namespace kmint::ufo {
 		state_machine_->SetGlobalState(global_tank_state::Instance());
 		state_machine_->SetCurrentState(wander_state::Instance());
 
+		damage_ = 0;
+
 		emp_shield = "";
-		//damage_ = 100;
 		curr_action_ = actions::FLEE;
 	}
 
 	void tank::act(delta_time dt) {
 		t_since_move_ += dt;
+		t_since_hit += dt;
+
+		if (to_seconds(t_since_hit) >= 1) {
+			been_hit = false;
+			t_since_hit = from_seconds(0);
+		}
+
 		if (to_seconds(t_since_move_) >= waiting_time(node())) {
 			get_state_machine()->Update();
 			t_since_move_ = from_seconds(0);
 		}
+
+
 		// laat ook zien wat hij ziet
 		for (auto i = begin_perceived(); i != end_perceived(); ++i) {
 			auto& a = *i;
@@ -54,31 +62,37 @@ namespace kmint::ufo {
 	void tank::take_damage() {
 		int added_damage = 0;
 
-		if (emp_shield == "shield") {
-			added_damage = 20;
-			get_state_machine()->change_chances(actions::SHIELD, added_damage);
-		}
-		else if (emp_shield == "emp") {
-			added_damage = 0;
-			get_state_machine()->change_chances(actions::EMP, added_damage);
-		}
-		else {
-			added_damage = 50;
-			get_state_machine()->change_chances(actions::FLEE, added_damage);
-		}
+		if (!been_hit) {
+			been_hit = true;
+			if (emp_shield == "SHIELD") {
+				added_damage = 20;
+				get_state_machine()->change_chances(actions::SHIELD, added_damage);
+			}
+			else if (emp_shield == "EMP") {
+				added_damage = 0;
+				get_state_machine()->change_chances(actions::EMP, added_damage);
+			}
+			else {
+				added_damage = 50;
+				get_state_machine()->change_chances(actions::FLEE, added_damage);
+			}
 
-		emp_shield = "";
-		damage_ += added_damage;
+			emp_shield = "";
+			damage_ += added_damage;
+
+			std::cout << "took " << added_damage << " damage: total: " << damage_<< std::endl;
+
+		}
 	}
 
 	play::map_bound_actor* tank::find_closest_target(std::string target_type) {
-		//zoeken naar alle zooi en nodes van zooi opslaan in vector
+		//zoeken naar alle items en nodes van items opslaan in vector
 		std::vector<play::map_bound_actor*> actors;
 
 		actors = find_actors(*stage_, target_type);
 		astar a{ *graph_ };
 
-		int shortest_length = 3000000;
+		int shortest_length = INT_MAX;
 		std::vector<int> shortest_path = {};
 		play::map_bound_actor* shortest_actor = nullptr;
 

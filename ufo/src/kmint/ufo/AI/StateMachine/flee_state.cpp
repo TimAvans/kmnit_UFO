@@ -39,12 +39,9 @@ namespace kmint {
 						astar a{ *t->get_graph() };
 
 						auto result = a.search(t->node().node_id(), find_closest_node_to(*t->get_graph(), flee_location).node_id());
-						a.clear_path_color(t->path_, t->visited_);
 						
 						t->set_path(result[0]);
 						t->visited_ = result[1];
-
-						a.show_shortest_path(t->path_, t->visited_);
 
 						break;
 					}

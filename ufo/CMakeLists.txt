@@ -33,6 +33,11 @@ add_library(ufo-common STATIC
   src/kmint/ufo/AI/ForceDriven/moving_entity.cpp
   src/kmint/ufo/AI/ForceDriven/wall.cpp
   src/kmint/ufo/AI/ForceDriven/c2d_matrix.cpp
+  src/kmint/ufo/AI/ForceDriven/Behaviours/wall_avoidance_steering_state.cpp
+  src/kmint/ufo/AI/ForceDriven/Behaviours/wander_steering_state.cpp
+  src/kmint/ufo/AI/ForceDriven/Behaviours/pursuit_steering_state.cpp
+  src/kmint/ufo/AI/ForceDriven/Behaviours/seek_steering_state.cpp
+  
   )
 
 target_compile_features(ufo-common PUBLIC cxx_std_17)

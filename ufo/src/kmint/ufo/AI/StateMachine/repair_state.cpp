@@ -22,13 +22,10 @@ namespace kmint {
 				x->current_target_ = x->andre_->current_target_;
 
 				auto result = a.search(x->node().node_id(), find_node_of_kind(*x->get_graph(), x->andre_->current_target_).node_id());
-				a.clear_path_color(x->path_, x->visited_);
-
 
 				x->set_path(result[0]);
 				x->visited_ = result[1];
 
-				a.show_shortest_path(x->path_, x->visited_);
 
 				x->change_color(0, 255, 0);
 			}
@@ -45,6 +42,7 @@ namespace kmint {
 					if (auto p = dynamic_cast<andre*>(&a)) {
 						x->damage_ = 0;
 						x->get_state_machine()->ChangeState(wander_state::Instance());
+						std::cout << "damage: " << x->damage_ << std::endl;
 					}
 				}
 
@@ -57,13 +55,9 @@ namespace kmint {
 
 					auto result = a.search(x->node().node_id(), find_node_of_kind(*x->get_graph(), x->current_target_).node_id());
 
-					a.clear_path_color(x->path_, x->visited_);
-
-
 					x->set_path(result[0]);
 					x->visited_ = result[1];
 
-					a.show_shortest_path(x->path_, x->visited_);
 				}
 			}
 		}

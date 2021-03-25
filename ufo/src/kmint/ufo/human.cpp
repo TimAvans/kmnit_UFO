@@ -15,8 +15,37 @@ math::vector2d random_location() {
 
 } // namespace
 human::human()
-	: play::free_roaming_actor{ random_location() },
+	: moving_entity(math::vector2d(0, 0), 10, math::vector2d(-20, -20), 1, 2, 50, random_location()),
 	drawable_{ *this, human_image() } {
+
+	steering_ = new steering_behaviour(this, 80.0, 2.0, 1.0);
+}
+
+void human::tag_as_target() {
+	graphics::color color{ 255,0,0 };
+	drawable_.set_tint(color);
+}
+
+void human::act(delta_time dt) {
+	time_elapsed_ = to_seconds(dt);
+	math::vector2d old_pos = location();
+	math::vector2d steering_force;
+	steering_force = steering_->calculate();
+	math::vector2d acceleration = steering_force / mass_;
+	velocity_ += acceleration * time_elapsed_;
+
+	if (sqrt(velocity_.x() * velocity_.x() + velocity_.y() * velocity_.y()) > max_force_)
+	{
+		velocity_ = math::normalize(velocity_);
+		velocity_ *= max_force_;
+	}
+
+	location(location() + velocity_ * time_elapsed_);
+
+	if ((velocity_.x() * velocity_.x()) + (velocity_.y() * velocity_.y()) > 0) {
+		heading_ = math::normalize(velocity_);
+		side_ = math::perp(side_);
+	}
 }
 
 

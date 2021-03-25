@@ -35,7 +35,7 @@ public:
   void take_damage();
   int damage_;
   actions curr_action_;
-
+  bool been_hit = false;
 
   play::map_bound_actor* current_target_object_;
   char current_target_;
@@ -43,7 +43,8 @@ public:
 
   andre* andre_;
 private:
-  delta_time t_since_move_{};
+	delta_time t_since_move_{};
+	delta_time t_since_hit{};
   map::map_graph* graph_;
 
   std::string emp_shield;

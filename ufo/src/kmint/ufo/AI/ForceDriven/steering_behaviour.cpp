@@ -24,18 +24,52 @@ namespace kmint {
 			};
 		}
 
+		math::vector2d steering_behaviour::pursuit(play::actor* target) {
+				//if the evader is ahead and facing the agent then we can just seek foor the evader's current position
+			if (auto x = dynamic_cast<moving_entity*>(target)) {
+
+				math::vector2d to_target = x->location() - agent_->location();
+
+				double relative_heading = math::dot(agent_->heading_, x->heading_);
+
+
+				//0.95 = 18degs
+				if ((math::dot(to_target, agent_->heading_) > 0) && (relative_heading < -0.95)) {
+					return seek(x->location());
+				}
+
+				//not considered ahead so we predict where the evader will be.
+
+				//the look-ahead time is proportional to the distance between the evader
+				//and the pursuer; and is inversely proportional to the sum of the agents'velocities
+				double target_speed = sqrt(x->velocity_.x() * x->velocity_.x() + x->velocity_.y() * x->velocity_.y());
+
+				double look_ahead_time = sqrt(to_target.x() * to_target.x() + to_target.y() * to_target.y()) / (agent_->max_speed_ + target_speed);
+
+				//now seek to the predicted future position of the evader
+				return seek(x->location() + x->velocity_ * look_ahead_time) * pursuit_weight_;
+			}
+			return agent_->heading_;
+		}
+
+		math::vector2d steering_behaviour::seek(math::vector2d target) {
+			math::vector2d desired_velocity = math::normalize(target - agent_->location()) * agent_->max_speed_;
+
+			return (desired_velocity - agent_->velocity_) * seek_weight_;
+		}
+
 		math::vector2d steering_behaviour::calculate() {
 			steering_force_.x(0);
 			steering_force_.y(0);
 
-			steering_force_ += wall_avoidance(walls_) *
+			steering_force_ += wall_avoidance() *
 					wall_avoidance_weight_;
 
 			steering_force_ += wander() * wander_weight_;
 
 			if (sqrt(steering_force_.x() * steering_force_.x() + steering_force_.y() * steering_force_.y()) > agent_->max_force_)
 			{
-				math::normalize(steering_force_);
+				steering_force_ = math::normalize(steering_force_);
 
 				steering_force_ *= agent_->max_force_;
 			}
@@ -56,10 +90,10 @@ namespace kmint {
 			math::vector2d target = wander_target_ + math::vector2d(wander_distance_, 0);
 			math::vector2d world_target = point_to_world_space(target, agent_->heading_, agent_->side_, agent_->location());
 
-			return world_target - agent_->location();
+			return world_target - agent_->location() * wander_weight_;
 		}
 
-		math::vector2d steering_behaviour::wall_avoidance(const std::vector<wall>& walls) {
+		math::vector2d steering_behaviour::wall_avoidance() {
 
 			create_feelers();
 
@@ -75,8 +109,8 @@ namespace kmint {
 			//feelers
 			for (int flr = 0; flr < feelers_.size(); ++flr) {
 				//walls
-				for (int w = 0; w < walls.size(); ++w) {
-					if (line_intersection(agent_->location(), feelers_[flr], walls[w].from, walls[w].to, distToThisIP, point)) {
+				for (int w = 0; w < walls_.size(); ++w) {
+					if (line_intersection(agent_->location(), feelers_[flr], walls_[w].from, walls_[w].to, distToThisIP, point)) {
 						if (distToThisIP < distToClosestIP) {
 							distToClosestIP = distToThisIP;
 							closest_wall = w;
@@ -88,11 +122,11 @@ namespace kmint {
 				//if intersection point is found
 				if (closest_wall >= 0) {
 					math::vector2d overshoot = feelers_[flr] - closest_point;
-					steering_force = walls[closest_wall].normal * (sqrt(overshoot.x() * overshoot.x() + overshoot.y() * overshoot.y()));
+					steering_force = walls_[closest_wall].normal * (sqrt(overshoot.x() * overshoot.x() + overshoot.y() * overshoot.y()));
 				}
 			}
 
-			return steering_force * -1;
+			return steering_force * -1 * wall_avoidance_weight_;
 		}
 
 		void steering_behaviour::create_feelers() {

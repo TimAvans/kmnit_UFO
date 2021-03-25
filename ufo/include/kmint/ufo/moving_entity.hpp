@@ -8,8 +8,6 @@ namespace kmint {
 		class moving_entity : public kmint::play::free_roaming_actor {
 		protected:
 
-
-		
 		public:
 			double time_elapsed_;
 
@@ -22,6 +20,9 @@ namespace kmint {
 			math::vector2d velocity_;
 			math::vector2d heading_;
 			math::vector2d side_;
+
+			play::actor* target_;
+
 
 			moving_entity(
 				math::vector2d velocity,
@@ -39,7 +40,6 @@ namespace kmint {
 				mass_ = mass;
 				max_turnrate_ = turn_rate;
 				max_force_ = max_force;
-
 			}
 		};
 	}

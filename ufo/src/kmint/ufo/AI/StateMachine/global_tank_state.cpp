@@ -20,9 +20,6 @@ namespace kmint {
 
 			for (int i = 0; i < x->num_colliding_actors(); ++i) {
 				auto& a = x->colliding_actor(i);
-				if (auto p = dynamic_cast<saucer*>(&a)) {
-					x->take_damage();
-				}
 				if (auto h = dynamic_cast<human*>(&a)) {
 					h->remove();
 				}

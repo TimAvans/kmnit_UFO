@@ -1,5 +1,5 @@
 #pragma once
-#include "state.hpp"
+#include "steering_state.hpp"
 
 namespace kmint {
 	namespace ufo {
@@ -9,37 +9,51 @@ namespace kmint {
 		private:
 
 			entity_type* owner_;
-			state<entity_type>* current_state_;
-			state<entity_type>* previous_state_;
-			state<entity_type>* global_state_;
+			steering_state<entity_type>* current_state_;
+			steering_state<entity_type>* previous_state_;
+			steering_state<entity_type>* global_state_;
 
 		public:
 			state_machine(entity_type* owner) :owner_(owner), current_state_(NULL), global_state_(NULL) {}
 
-			void SetCurrentState(state<entity_type>* s)
+			void SetCurrentState(steering_state<entity_type>* s)
 			{
 				current_state_ = s;
 			}
 
-			void SetGlobalState(state<entity_type>* g)
+			void SetGlobalState(steering_state<entity_type>* g)
 			{
 				global_state_ = g;
 			}
 
-			void Update() const
+			math::vector2d Update() const
 			{
+				math::vector2d v;
+
+
 				if (global_state_)
 				{
-					global_state_->execute(owner_);
+					v += global_state_->execute(owner_);
 				}
 
 				if (current_state_)
 				{
-					current_state_->execute(owner_);
+					v += current_state_->execute(owner_);
 				}
+
+				if (auto x = dynamic_cast<saucer*>(owner_)) {
+					if (sqrt(v.x() * v.x() + v.y() * v.y()) > x->max_force_)
+					{
+						math::normalize(v);
+
+						v *= x->max_force_;
+					}
+				}
+
+				return v;
 			}
 
-			void ChangeState(state<entity_type>* new_state)
+			void ChangeState(steering_state<entity_type>* new_state)
 			{
 				if (new_state != current_state_) {
 					previous_state_ = current_state_;
@@ -50,12 +64,12 @@ namespace kmint {
 				}
 			}
 
-			state<entity_type>* CurrentState() const
+			steering_state<entity_type>* CurrentState() const
 			{
 				return current_state_;
 			}
 
-			state<entity_type>* GlobalState() const
+			steering_state<entity_type>* GlobalState() const
 			{
 				return global_state_;
 			}
