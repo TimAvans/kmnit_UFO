@@ -23,7 +23,6 @@ namespace kmint {
 		{
 			for (play::actor& a : *stage) {
 				if (auto h = dynamic_cast<human*>(&a)) {
-					std::cout << "removing human" << std::endl;
 					h->remove_human();
 				}
 			}
@@ -33,7 +32,6 @@ namespace kmint {
 				if (auto s = dynamic_cast<saucer*>(&a))
 				{
 					s->target_ = NULL;
-					std::cout << "removing saucer" << std::endl;
 					s->remove();
 				}
 			}
@@ -43,7 +41,6 @@ namespace kmint {
 				if (dynamic_cast<human*>(&a) ||
 					dynamic_cast<emp*>(&a) || dynamic_cast<shield*>(&a))
 				{
-					std::cout << "removing something else" << std::endl;
 					a.remove();
 				}
 			}
@@ -61,7 +58,6 @@ namespace kmint {
 		}
 
 		void spawner::spawn_actors() {
-			std::cout << "starting new round" << std::endl;
 			for (std::size_t h{ 0 }; h < 100; ++h) {
 				stage->build_actor<human>();
 			}

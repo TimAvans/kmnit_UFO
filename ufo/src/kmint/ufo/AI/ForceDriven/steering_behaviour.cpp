@@ -19,7 +19,6 @@ namespace kmint {
 		}
 
 		math::vector2d steering_behaviour::pursuit(play::actor* target) {
-			//std::cout << target->location() << std::endl;
 				//if the evader is ahead and facing the agent then we can just seek foor the evader's current position
 			try {
 				if (auto x = dynamic_cast<moving_entity*>(target)) {

@@ -20,10 +20,6 @@ namespace kmint {
 		void wander_state::execute(play::map_bound_actor* actor)
 		{
 			auto x = dynamic_cast<state_user*>(actor);
-
-			//heeft ufo gezien? verander state
-			//changestate(probablistic_state::instance())
-
 			//Wander
 			x->random_move();
 		}

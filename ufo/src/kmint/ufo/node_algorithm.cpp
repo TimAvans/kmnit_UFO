@@ -93,5 +93,5 @@ namespace kmint {
 
 		double waiting_time(map::map_node const& node) { return node[0].weight(); }
 
-	} // namespace ufo
-} // namespace kmint
+	}
+} 

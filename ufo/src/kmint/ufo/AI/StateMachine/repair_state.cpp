@@ -42,7 +42,6 @@ namespace kmint {
 					if (auto p = dynamic_cast<andre*>(&a)) {
 						x->damage_ = 0;
 						x->get_state_machine()->ChangeState(wander_state::Instance());
-						std::cout << "damage: " << x->damage_ << std::endl;
 					}
 				}
 

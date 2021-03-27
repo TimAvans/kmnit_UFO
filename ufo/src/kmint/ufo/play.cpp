@@ -36,12 +36,6 @@ int play() {
                                   graphics::image{m.background_image()});
   s.build_actor<play::map_actor>(math::vector2d{0.f, 0.f}, m.graph());
 
-  std::vector<int> locs = find_nodes_of_kind(graph, 'D');
-
-  for (int i : locs) {
-      std::cout << graph[i].location() << std::endl;
-  }
-
   std::vector<math::vector2d> doors = {
       {680, 120},
       {696, 120},
@@ -125,4 +119,4 @@ int play() {
   return 0;
 }
 
-} // namespace kmint::ufo
+}

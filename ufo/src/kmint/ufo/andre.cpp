@@ -14,7 +14,7 @@ graphics::image andre_image() {
   return graphics::image{"resources/andre.png"};
 }
 
-} // namespace
+}
 andre::andre(map::map_graph& g, map::map_node& initial_node)
 	: play::map_bound_actor{ initial_node }, drawable_{ *this,
 													 graphics::image{
@@ -64,4 +64,4 @@ void andre::act(delta_time dt) {
 	}
 }
 
-} // namespace kmint::ufo
+}

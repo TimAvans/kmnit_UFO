@@ -14,14 +14,12 @@ public:
   saucer_type type() const noexcept { return type_; }
   ui::drawable const &drawable() const override { return drawable_; }
   void act(delta_time dt) override;
-  // participates in collisions
   bool incorporeal() const override { return false; }
   scalar collision_range() const override { return 32.0; }
   state_machine<play::free_roaming_actor>* get_state_machine();
 
   bool perceptive() const override { return true; }
-  // geeft het bereik aan waarbinnen een tank
-  // andere actors kan waarnemen.
+
   scalar perception_range() const override { return 200.f; }
 
   steering_behaviour* get_steering();
@@ -39,5 +37,5 @@ private:
 
 };
 
-} // namespace kmint::ufo
+}
 #endif

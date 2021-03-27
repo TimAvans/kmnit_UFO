@@ -22,7 +22,7 @@ namespace kmint::ufo {
 			}
 			return graphics::image{ "resources/tank_green.png", scale };
 		}
-	} // namespace
+	}
 
 	tank::tank(map::map_graph& g, map::map_node& initial_node, tank_type t, play::stage& s, andre& andre) : state_user{ g, initial_node, graphics::image{tank_image(t)} }, type_{ t }, graph_{ &g }, stage_{ &s }, andre_{&andre}
 	{
@@ -49,7 +49,6 @@ namespace kmint::ufo {
 			t_since_move_ = from_seconds(0);
 		}
 
-		// laat ook zien wat hij ziet
 		for (auto i = begin_perceived(); i != end_perceived(); ++i) {
 			auto& a = *i;
 			if (dynamic_cast<saucer*>(&a)) {
@@ -78,14 +77,11 @@ namespace kmint::ufo {
 
 			emp_shield = "";
 			damage_ += added_damage;
-
-			std::cout << "took " << added_damage << " damage: total: " << damage_<< std::endl;
-
 		}
 	}
 
 	play::map_bound_actor* tank::find_closest_target(std::string target_type) {
-		//zoeken naar alle items en nodes van items opslaan in vector
+		//find all items and save their nodesin vector
 		std::vector<play::map_bound_actor*> actors;
 
 		actors = find_actors(*stage_, target_type);
@@ -95,7 +91,7 @@ namespace kmint::ufo {
 		std::vector<int> shortest_path = {};
 		play::map_bound_actor* shortest_actor = nullptr;
 
-		//voor elke node in vector, doe astar
+		//for every node in vector, do astar
 		for (play::map_bound_actor* actor : actors) {
 			std::vector<int> path = a.search(node().node_id(), actor->node().node_id())[0];
 
@@ -124,4 +120,4 @@ namespace kmint::ufo {
 		object.remove();
 	}
 
-} // namespace kmint::ufo
+} 

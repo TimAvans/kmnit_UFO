@@ -10,4 +10,4 @@ namespace kmint::ufo {
 		: play::static_actor{location},
 		drawable_{ *this, graphics::image{"resources/free-shield-icon-2.jpg", 0.0} } {}
 
-} // namespace kmint::ufo
+}

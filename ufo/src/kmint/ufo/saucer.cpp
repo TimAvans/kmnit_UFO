@@ -52,7 +52,7 @@ namespace kmint::ufo {
 				return { 20.f, -20.f };
 			}
 		}
-	} // namespace
+	}
 
 	saucer::saucer(saucer_type type)
 		: moving_entity(math::vector2d(0, 0), 20, velocity_for(type), 1, 2, 20, location_for(type)),
@@ -129,4 +129,4 @@ namespace kmint::ufo {
 	}
 
 
-} // namespace kmint::ufo
+}

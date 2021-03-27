@@ -66,4 +66,4 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 map::map map() { return map::read_map(graph_description); }
 
-} // namespace kmint::ufo
+} 

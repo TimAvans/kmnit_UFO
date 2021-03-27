@@ -20,7 +20,6 @@ namespace kmint {
 
 			m._31 = 0; m._32 = 0; m._33 = 1;
 
-			//and multiply
 			matrix_multiply(m);
 		}
 
@@ -36,7 +35,6 @@ namespace kmint {
 
 			mat._31 = 0; mat._32 = 0; mat._33 = 1;
 
-			//and multiply
 			matrix_multiply(mat);
 		}
 

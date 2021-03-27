@@ -21,11 +21,6 @@ namespace kmint {
 
 
 			void create_feelers();
-
-
-			//this returns a steering force which will keep the agent away from any
-			//walls it may encounter
-
 			float random_clamped();
 		
 		public:

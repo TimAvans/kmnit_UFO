@@ -31,7 +31,7 @@ namespace kmint::ufo {
 			return boxes[random_int(0, boxes.size())];
 		}
 
-	} // namespace
+	}
 	human::human()
 		: moving_entity(math::vector2d(0, 0), 30, math::vector2d(-20, -20), 1, 10, 70, random_location()),
 		drawable_{ *this, human_image() } {
@@ -62,7 +62,7 @@ namespace kmint::ufo {
 			wall({1024.0f, 0.0f}, {1024.0f, 768.0f}),
 			wall({0.0f, 0.0f}, {1024.0f, 0.0f}),
 
-			//gebouwcomplex 1
+			//buildingcomplex 1
 			wall({584, 72}, {584, 136}),
 			wall({616, 136}, {616, 120}),
 			wall({616, 120}, {664, 120}),
@@ -70,21 +70,21 @@ namespace kmint::ufo {
 			wall({728, 120}, {728, 72}),
 			wall({782, 72}, {584, 72}),
 
-			//gebouwcomplex 2
+			//buildingcomplex 2
 			wall({584, 216}, {584, 312}),
 			wall({584, 312}, {600, 312}),
 			wall({648, 312}, {664, 312}),
 			wall({664, 312}, {664, 216}),
 			wall({664, 216}, {584, 216}),
 
-			//gebouwcomplex 3
+			//buildingcomplex 3
 			wall({584, 408}, {584, 488}),
 			wall({584, 488}, {616, 488}),
 			wall({654, 488}, {680, 488}),
 			wall({680, 488}, {680, 408}),
 			wall({680, 408}, {584, 408}),
 
-			//gebouwcomplex 4
+			//buildingcomplex 4
 			wall({328, 520}, {328, 632}),
 			wall({328, 632}, {376, 632}),
 			wall({424, 632}, {424, 616}),
@@ -167,4 +167,4 @@ namespace kmint::ufo {
 		steering_->set_seek_target(NULL);
 	}
 
-} // namespace kmint::ufo
+}

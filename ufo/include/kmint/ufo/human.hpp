@@ -13,7 +13,6 @@ class human : public moving_entity {
 public:
   human();
   const ui::drawable& drawable() const override { return drawable_; }
-  // participates in collisions
   bool incorporeal() const override { return incorporeal_; }
   scalar collision_range() const override { return 32.0; }
 
@@ -23,8 +22,6 @@ public:
 
   bool perceptive() const override { return perceptive_; }
   bool perceivable() const override { return perceivable_; }
-  // geeft het bereik aan waarbinnen een human
-  // andere actors kan waarnemen.
   scalar perception_range() const override { return 100.f; }
 
   void remove_human();
@@ -45,6 +42,6 @@ private:
   double redtank_willingness_;
 };
 
-} // namespace kmint::ufo
+}
 
 #endif /* KMINT_UFO_HUMAN_HPP */

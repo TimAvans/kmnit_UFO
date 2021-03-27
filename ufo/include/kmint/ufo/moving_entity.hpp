@@ -28,15 +28,11 @@ namespace kmint {
 
 			play::actor* target_;
 
-			//wander
 			math::vector2d wander_target_;
 			double wander_jitter_;
 			double wander_radius_;
 			double wander_distance_;
 
-			//multipliers. These can be adjusted to effect strength of the  
-			//appropriate behavior. Useful to get flocking the way you require
-			//for example.
 			double        separation_weight_;
 			double        cohesion_weight_;
 			double        alignment_weight_;
