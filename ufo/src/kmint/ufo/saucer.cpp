@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include <kmint/ufo/node_algorithm.hpp>
-#include "kmint/ufo/wall_avoidance_steering_state.hpp"
+#include "kmint/ufo/global_saucer_state.hpp"
 #include "kmint/ufo/wander_steering_state.hpp"
 #include "kmint/ufo/pursuit_steering_state.hpp"
 #include "kmint/ufo/seek_steering_state.hpp"
@@ -62,7 +62,7 @@ namespace kmint::ufo {
 
 		state_machine_ = new state_machine<play::free_roaming_actor>(this);
 		state_machine_->SetCurrentState(wander_steering_state::Instance());
-		state_machine_->SetGlobalState(wall_avoidance_steering_state::Instance());
+		state_machine_->SetGlobalState(global_saucer_state::Instance());
 
 
 		wander_jitter_ = 0.3;
@@ -103,35 +103,6 @@ namespace kmint::ufo {
 	}
 
 	void saucer::act(delta_time dt) {
-
-		for (auto i = begin_perceived(); i != end_perceived(); ++i) {
-			auto& a = *i;
-			if (target_ == nullptr) {
-				if (auto x = dynamic_cast<human*>(&a)) {
-					if (!x->targeted) {
-						target_ = x;
-						x->targeted = true;
-						x->tag_as_target();
-						get_state_machine()->ChangeState(pursuit_steering_state::Instance());
-					}
-				}
-			}
-			if (auto x = dynamic_cast<tank*>(&a)) {
-				if (x->damage_ < 100) {
-					if (!dynamic_cast<tank*>(target_)) {
-
-						if (auto h = dynamic_cast<human*>(target_)) {
-							h->targeted = false;
-							h->clear_tag();
-						}
-
-						target_ = x;
-						get_state_machine()->ChangeState(seek_steering_state::Instance());
-					}
-				}
-			}
-		}
-
 		time_elapsed_ = to_seconds(dt);
 		math::vector2d old_pos = location();
 		math::vector2d steering_force;

@@ -4,14 +4,14 @@
 
 namespace kmint {
 	namespace ufo {
-		class wall_avoidance_steering_state : public steering_state<play::free_roaming_actor> {
+		class global_saucer_state : public steering_state<play::free_roaming_actor> {
 		public:
-			static wall_avoidance_steering_state* Instance();
+			static global_saucer_state* Instance();
 			math::vector2d execute(play::free_roaming_actor* actor) override;
 			void enter(play::free_roaming_actor* actor) override;
 			void exit(play::free_roaming_actor* actor) override;
 		private:
-			wall_avoidance_steering_state() {}
+			global_saucer_state() {}
 		};
 	}
 }
