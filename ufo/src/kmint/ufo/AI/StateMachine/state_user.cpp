@@ -30,13 +30,17 @@ namespace kmint {
 			}
 			else {
 				astar a(*get_graph());
-				a.clear_path_color(initial_path_, visited_);
+				//a.clear_path_color(initial_path_, visited_);
 			}
 		}
 
 		void state_user::random_move()
 		{
 			int next_index = random_int(0, node().num_edges());
+
+			while(node()[next_index].weight() > 4){
+				next_index = random_int(0, node().num_edges());
+			}
 			node(node()[next_index].to());
 		}
 
@@ -57,7 +61,7 @@ namespace kmint {
 			for (int i = 0; i < num_colliding_actors(); ++i) {
 				auto& a = colliding_actor(i);
 				if (auto h = dynamic_cast<human*>(&a)) {
-					h->remove();
+					h->remove_human();
 				}
 			}
 		}

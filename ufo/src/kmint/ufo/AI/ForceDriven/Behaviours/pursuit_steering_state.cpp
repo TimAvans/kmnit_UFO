@@ -20,7 +20,9 @@ namespace kmint {
 		}
 
 		void pursuit_steering_state::enter(play::free_roaming_actor* actor) {
-
+			if (auto x = dynamic_cast<saucer*>(actor)) {
+				x->change_color(255, 0, 0);
+			}
 		}
 
 		math::vector2d pursuit_steering_state::execute(play::free_roaming_actor* actor)
@@ -36,7 +38,7 @@ namespace kmint {
 					auto& a = s->colliding_actor(i);
 					if (auto h = dynamic_cast<human*>(&a)) {
 						if (h == s->target_) {
-							h->remove();
+							h->remove_human();
 							s->target_ = nullptr;
 							s->get_state_machine()->ChangeState(wander_steering_state::Instance());
 						}
@@ -48,7 +50,9 @@ namespace kmint {
 		}
 
 		void pursuit_steering_state::exit(play::free_roaming_actor* actor) {
-
+			if (auto x = dynamic_cast<saucer*>(actor)) {
+				x->clear_color();
+			}
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace kmint {
 			std::vector<std::vector<int>> search(int source, int target);
 			void show_shortest_path(std::vector<int> path, std::vector<int> visited);
 			void clear_path_color(std::vector<int> path, std::vector<int> visited);
-
+			void clear_all_paths();
 		private:
 			typedef std::pair<int, int> iPair;
 

@@ -37,6 +37,7 @@ map::map_node const &random_node_of_kind(map::map const &map, char kind);
 map::map_node const &find_closest_node_to(map::map_graph const &graph,
                                           math::vector2d location);
 
+std::vector<int> find_nodes(map::map_graph const& graph, char kind);
 
 std::vector<play::map_bound_actor*> find_actors(play::stage& stage, std::string target_type);
 } // namespace ufo

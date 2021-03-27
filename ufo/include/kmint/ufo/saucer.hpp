@@ -27,7 +27,8 @@ public:
   steering_behaviour* get_steering();
   steering_behaviour* steering_;
 
-
+  void change_color(graphics::color_component r, graphics::color_component g, graphics::color_component b);
+  void clear_color();
 private:
   play::image_drawable drawable_;
   saucer_type type_;

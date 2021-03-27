@@ -23,6 +23,18 @@ namespace kmint {
 			return *i;
 		}
 
+		std::vector<int> find_nodes(map::map_graph const& graph, char kind) {
+			std::vector<int> nodes;
+			
+			for (int i = 0; i < graph.num_nodes(); ++i) {
+				if (graph[i].node_info().kind == kind) {
+					nodes.push_back(graph[i].node_id());
+				}
+			}
+
+			return nodes;
+		}
+
 		std::vector<play::map_bound_actor*> find_actors(play::stage& stage, std::string target_type) {
 			std::vector<play::map_bound_actor*> targets;
 
@@ -40,6 +52,18 @@ namespace kmint {
 			}
 
 			return targets;
+		}
+		
+		std::vector<int> find_nodes_of_kind(map::map_graph& graph, char kind) {
+			std::vector<int> nodes;
+
+			for (int i = 0; i < graph.num_nodes(); ++i) {
+				if (graph[i].node_info().kind == kind) {
+					nodes.push_back(graph[i].node_id());
+				}
+			}
+
+			return nodes;
 		}
 
 		map::map_node& random_node_of_kind(map::map& map, char kind) {

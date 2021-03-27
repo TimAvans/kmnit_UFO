@@ -88,7 +88,7 @@ namespace kmint {
 			//give visited color
 			for (int j : visited)
 			{
-				if (_graph[j].tagged()) {
+				if (_graph[j].tag() != graph::node_tag::path) {
 					_graph[j].tag(graph::node_tag::visited);
 				}
 			}
@@ -109,6 +109,10 @@ namespace kmint {
 			for (int i : path) {
 				_graph[i].tag(graph::node_tag::normal);
 			}
+		}
+
+		void astar::clear_all_paths() {
+			_graph.untag_all();
 		}
 	}
 }

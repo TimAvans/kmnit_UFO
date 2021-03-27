@@ -1,17 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\ufo",
-    "\\ufo\\include",
-    "\\ufo\\include\\kmint",
-    "\\ufo\\include\\kmint\\ufo",
-    "\\ufo\\src",
-    "\\ufo\\src\\kmint",
-    "\\ufo\\src\\kmint\\ufo",
-    "\\ufo\\src\\kmint\\ufo\\AI",
-    "\\ufo\\src\\kmint\\ufo\\AI\\ForceDriven",
-    "\\ufo\\src\\kmint\\ufo\\AI\\ForceDriven\\Behaviours"
+    "\\ufo\\src\\kmint\\ufo\\AI\\StateMachine"
   ],
-  "SelectedNode": "\\CMakeLists.txt",
+  "SelectedNode": "\\ufo",
   "PreviewInSolutionExplorer": false
 }

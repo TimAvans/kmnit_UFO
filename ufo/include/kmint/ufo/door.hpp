@@ -4,9 +4,9 @@
 
 namespace kmint {
 	namespace ufo {
-		class emp : public play::map_bound_actor {
+		class door : public play::static_actor {
 		public:
-			emp(map::map_graph& g, map::map_node& initial_node);
+			door(map::map_graph& g, math::vector2d location);
 			// wordt elke game tick aangeroepen
 			ui::drawable const& drawable() const override { return drawable_; }
 			// als incorporeal false is, doet de actor mee aan collision detection

@@ -17,7 +17,9 @@ namespace kmint {
 		}
 
 		void seek_steering_state::enter(play::free_roaming_actor* actor) {
-
+			if (auto x = dynamic_cast<saucer*>(actor)) {
+				x->change_color(0, 255, 0);
+			}
 		}
 
 		math::vector2d seek_steering_state::execute(play::free_roaming_actor* actor)
@@ -26,7 +28,12 @@ namespace kmint {
 
 
 			if (auto x = dynamic_cast<saucer*>(actor)) {
-				v = x->steering_->seek(x->target_->location());
+				if (x->target_ != nullptr) {
+					v = x->steering_->seek(x->target_->location());
+				}
+				else {
+					v = x->heading_;
+				}
 			}
 
 			if (auto s = dynamic_cast<saucer*>(actor)) {
@@ -48,7 +55,9 @@ namespace kmint {
 		}
 
 		void seek_steering_state::exit(play::free_roaming_actor* actor) {
-			
+			if (auto x = dynamic_cast<saucer*>(actor)) {
+				x->clear_color();
+			}
 		}
 	}
 }

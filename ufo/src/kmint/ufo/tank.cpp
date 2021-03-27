@@ -39,7 +39,7 @@ namespace kmint::ufo {
 		t_since_move_ += dt;
 		t_since_hit += dt;
 
-		if (to_seconds(t_since_hit) >= 1) {
+		if (to_seconds(t_since_hit) >= 3) {
 			been_hit = false;
 			t_since_hit = from_seconds(0);
 		}
@@ -48,7 +48,6 @@ namespace kmint::ufo {
 			get_state_machine()->Update();
 			t_since_move_ = from_seconds(0);
 		}
-
 
 		// laat ook zien wat hij ziet
 		for (auto i = begin_perceived(); i != end_perceived(); ++i) {
@@ -113,7 +112,9 @@ namespace kmint::ufo {
 		}
 
 		set_path(shortest_path);
-		a.show_shortest_path(path_, visited_);
+
+		//if path to object has to be shown: little ugly when showing multiple paths at the same time
+		//a.show_shortest_path(path_, visited_);
 
 		return shortest_actor;
 	}

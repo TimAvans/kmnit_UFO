@@ -8,7 +8,6 @@ namespace kmint {
 		public:
 			shield(map::map_graph& g, map::map_node& initial_node);
 			// wordt elke game tick aangeroepen
-			void act(delta_time dt) override;
 			ui::drawable const& drawable() const override { return drawable_; }
 			// als incorporeal false is, doet de actor mee aan collision detection
 			bool incorporeal() const override { return false; }

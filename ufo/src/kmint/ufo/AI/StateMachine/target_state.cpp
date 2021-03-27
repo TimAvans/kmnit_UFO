@@ -38,7 +38,7 @@ namespace kmint {
 			x->clear_color();
 
 			astar a{*x->get_graph()};
-			a.clear_path_color(x->initial_path_, x->visited_);
+			//a.clear_path_color(x->initial_path_, x->visited_);
 			
 		}
 	}

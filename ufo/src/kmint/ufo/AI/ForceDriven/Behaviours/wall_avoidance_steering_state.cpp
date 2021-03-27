@@ -28,7 +28,6 @@ namespace kmint {
 			if (auto x = dynamic_cast<saucer*>(actor)) {
 				v = x->steering_->wall_avoidance();
 			}
-
 			return v;
 		}
 

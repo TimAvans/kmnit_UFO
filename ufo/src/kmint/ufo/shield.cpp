@@ -10,8 +10,4 @@ namespace kmint::ufo {
 		: play::map_bound_actor{ initial_node },
 		drawable_{ *this, graphics::image{"resources/free-shield-icon-2.jpg", 0.1} } {}
 
-	void shield::act(delta_time dt) {
-
-	}
-
 } // namespace kmint::ufo

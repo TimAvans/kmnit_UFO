@@ -14,15 +14,35 @@ public:
   human();
   const ui::drawable& drawable() const override { return drawable_; }
   // participates in collisions
-  bool incorporeal() const override { return false; }
+  bool incorporeal() const override { return incorporeal_; }
+  scalar collision_range() const override { return 32.0; }
+
+  bool must_draw() const override  { return should_draw_; } ;
+
   void act(delta_time dt) override;
 
+  bool perceptive() const override { return perceptive_; }
+  bool perceivable() const override { return perceivable_; }
+  // geeft het bereik aan waarbinnen een human
+  // andere actors kan waarnemen.
+  scalar perception_range() const override { return 100.f; }
+
+  void remove_human();
+
   void tag_as_target();
+  void clear_tag();
+  bool should_draw_ = true;
+  bool perceptive_ = true;
+  bool perceivable_ = true;
+  bool incorporeal_ = false;
   bool targeted = false;
 private:
   play::image_drawable drawable_;
   steering_behaviour* steering_;
 
+  double door_willingness_;
+  double greentank_willingness_;
+  double redtank_willingness_;
 };
 
 } // namespace kmint::ufo

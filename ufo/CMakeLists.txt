@@ -19,6 +19,9 @@ add_library(ufo-common STATIC
   src/kmint/ufo/human.cpp
   src/kmint/ufo/node_algorithm.cpp
   src/kmint/ufo/play.cpp
+  src/kmint/ufo/door.cpp
+  src/kmint/ufo/spawner.cpp
+  src/kmint/ufo/geometrics.cpp
   
   src/kmint/ufo/AI/StateMachine/state_user.cpp
   src/kmint/ufo/AI/StateMachine/wander_state.cpp
