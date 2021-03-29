@@ -75,8 +75,6 @@ namespace kmint {
 			stage->build_actor<saucer>(saucer_type::green);
 			stage->build_actor<saucer>(saucer_type::beige);
 			stage->build_actor<saucer>(saucer_type::yellow);
-
-
 		}
 
 		void spawner::set_world(play::stage& stage, map::map& map, map::map_graph& graph)

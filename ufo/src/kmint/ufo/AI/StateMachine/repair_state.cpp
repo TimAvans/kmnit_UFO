@@ -36,7 +36,6 @@ namespace kmint {
 			if (auto x = dynamic_cast<tank*>(actor)) {
 				x->move_over_path();
 
-
 				for (int i = 0; i < x->num_colliding_actors(); ++i) {
 					auto& a = x->colliding_actor(i);
 					if (auto p = dynamic_cast<andre*>(&a)) {

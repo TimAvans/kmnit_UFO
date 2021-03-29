@@ -17,7 +17,7 @@ class tank : public state_user {
 public:
   tank(map::map_graph& g, map::map_node& initial_node, tank_type t, play::stage& s, andre& andre);
   void act(delta_time dt) override;
-  scalar collision_range() const override { return 16.0; }
+  scalar collision_range() const override { return 32.0; }
   bool perceptive() const override { return true; }
   scalar perception_range() const override { return 200.f; }
 

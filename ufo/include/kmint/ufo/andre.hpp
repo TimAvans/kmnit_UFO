@@ -14,7 +14,7 @@ public:
 	void act(delta_time dt) override;
 	ui::drawable const& drawable() const override { return drawable_; }
 	bool incorporeal() const override { return false; }
-	scalar collision_range() const override { return 16.0; }
+	scalar collision_range() const override { return 32.0; }
 	bool perceptive() const override { return true; }
 	char current_target_ = '1';
 	void set_path(std::vector<int> path);
